@@ -1,0 +1,2 @@
+# Set node_modules to be excluded from line-ending conversions
+node_modules/* text eol=lf

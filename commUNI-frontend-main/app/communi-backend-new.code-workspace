@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../../communi-backend-new"
+		},
+		{
+			"path": ".."
+		}
+	],
+	"settings": {
+		"git.ignoreLimitWarning": true
+	}
+}

@@ -1,0 +1,42 @@
+{
+  "expo": {
+    "name": "CommUNI",
+    "slug": "communi-frontend",
+    "plugins": [
+      "expo-router"
+    ],
+    "scheme": "com.communi.app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "name": "CommUNI",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/communi-logo.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.sheenocon.communifrontend"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "935ab6eb-c4ed-42a4-9569-3f99db373f9c"
+      }
+    }
+  }
+}
