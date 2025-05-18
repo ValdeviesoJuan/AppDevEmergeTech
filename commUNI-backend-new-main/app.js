@@ -7,7 +7,6 @@ const jwt = require('jsonwebtoken');
 
 const mongoUrl = "mongodb+srv://valdeviesojuancarlos:D4IUuEHSC6whfvgR@cluster0.sw4ug8q.mongodb.net/?retryWrites=true&w=majority&appName=communi-backend";
 
-
 const JWT_SECRET = "ksfdgjshdkjvbhdsjkhjkhkjh54jhj$#%^gsdfjkgdsjkghdjfkhiiiuiure&&^%"
 mongoose.connect(mongoUrl)
   .then(() => {
@@ -100,6 +99,7 @@ app.post("/login-user", async (req, res) => {
       yearlevel: oldUser.yearlevel,
       profilePicture: oldUser.profilePicture,
       headerImage: oldUser.headerImage,
+      mbtiType: oldUser.mbtiType || "",
     };
 
     // Fetch selected interests from the database
@@ -270,14 +270,23 @@ app.post('/update-profile-images', async (req, res) => {
   const { email, type, image } = req.body; // type: 'profile' or 'header'
   try {
     const fieldToUpdate = type === 'profile' ? { profilePicture: image } : { headerImage: image };
-    await db.collection('users').updateOne({ email }, { $set: fieldToUpdate });
-    res.status(200).json({ status: 'ok', message: 'Image updated successfully!' });
+
+    const updatedUser = await User.findOneAndUpdate(
+      { email },
+      { $set: fieldToUpdate },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ status: 'error', message: 'User not found' });
+    }
+
+    res.status(200).json({ status: 'ok', message: 'Image updated successfully!', user: updatedUser });
   } catch (error) {
     console.error('Error updating images:', error);
     res.status(500).json({ status: 'error', message: 'Failed to update image' });
   }
 });
-
 
 app.post('/upload-image', async (req, res) => {
   const { email, type, image } = req.body; // Get the email, type, and Base64 image string from the request
@@ -307,7 +316,7 @@ app.post('/upload-image', async (req, res) => {
 app.post('/get-user-data', async (req, res) => {
   const { email } = req.body;
   try {
-    const user = await db.collection('users').findOne({ email });
+    const user = await User.findOne({ email });
     if (user) {
       res.status(200).json({
         status: 'ok',
@@ -315,6 +324,7 @@ app.post('/get-user-data', async (req, res) => {
           email: user.email,
           firstName: user.firstName,
           lastName: user.lastName,
+          mbtiType: user.mbtiType || "",
           profilePicture: user.profilePicture,
           headerImage: user.headerImage,
         },
@@ -497,6 +507,70 @@ app.post('/get-user-preferences', async (req, res) => {
   } catch (error) {
     console.error('Error fetching user preferences:', error);
     res.status(500).send({ status: 'error', data: 'Internal server error' });
+  }
+});
+
+app.post('/dialogflow-webhook', async (req, res) => {
+  console.log('Webhook received:', req.body); 
+
+  try {
+    const body = req.body; 
+    
+    // Guard clause: if body.queryResult or intent missing, send a default response
+    if (!body.queryResult || !body.queryResult.intent) {
+      return res.json({ fulfillmentText: 'No intent information received.' });
+    }
+
+    // Dialogflow sends the intent name here
+    const intentName = body.queryResult.intent.displayName; 
+    console.log('Intent:', intentName);
+     
+    const parameters = body.queryResult.parameters || {};
+
+    if (intentName === "List All Clubs") { 
+      const allClubs = await Community.find({}); 
+      const responseText = allClubs.length > 0 
+        ? "Here are all the clubs: " + allClubs.map(c => c.name).join(", ")
+        : "No clubs found.";
+      
+      return res.json({
+        fulfillmentText: responseText,
+      });
+    }
+    
+    else if (intentName === "Find Clubs by Interest") { 
+      console.log("Received interests parameter:", parameters.interest);
+      console.log("Type of interests:", typeof parameters.interest);
+
+      let interests = parameters.interest || [];
+      
+      // If interests is a string, convert to array with one element
+      if (typeof interests === 'string') {
+        interests = [interests];
+      }
+
+      if (!Array.isArray(interests) || interests.length === 0) {
+        return res.json({ fulfillmentText: "Please provide an interest to find matching clubs." });
+      }
+ 
+      const matchingClubs = await Community.find({
+        tags: { $in: interests }
+      });
+
+      const responseText = matchingClubs.length > 0 
+        ? `Here are clubs matching your interests: ${matchingClubs.map(c => c.name).join(", ")}`
+        : "No clubs found matching those interests.";
+
+      return res.json({
+        fulfillmentText: responseText,
+      });
+    }
+ 
+    res.json({ fulfillmentText: "Sorry, I don't understand that request." });
+    
+  } catch (error) {
+    console.error("Dialogflow webhook error:", error);
+    res.status(500).json({ fulfillmentText: "Internal server error" });
   }
 });
 

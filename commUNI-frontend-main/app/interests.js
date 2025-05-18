@@ -25,7 +25,7 @@ const interestList = [
   'Youth empowerment', 'Community service', 'Political science', 'Civic engagement',
   'Health & wellness', 'Food science', 'Culinary arts', 'Cooking', 'Nutrition',
   'Sustainable living', 'Technology', 'Engineering', 'Architecture', 'Mathematics',
-  'Physics', 'Chemistry', 'Physics education', 'Science education', 'STEM education',
+  'Physics', 'Chemistry', 'Physical education', 'Science education', 'STEM education',
   'Entrepreneurship', 'Freelance', 'Digital media', 'Photography', 'Creative arts'
 ];
 

@@ -1,0 +1,11 @@
+import { Dialogflow_V2 } from "react-native-dialogflow";
+
+export const initDialogflow = () => {
+    const privateKey = `-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDqOf59AvhX1FU9\n7p/bvkQUuqgatp1QAlNWs5MTUrko1O36BugdUFsCQF3dYUgL+aqyRcISc7E2Ymgs\n7qpGJkgNn4u23yh0XLCXUBYFTmwrhfnNF/yG7LvCtsoeydQgFFrw7E+g+7H2LfPq\nPwKIR2p3V8MzeBqQZ5/WoK/UYDxzN9lI7b4vXJEZoa8pATjHAXfW+U2zTB6HH6LF\nSz+OMWpzxYoxDMNd5yTejdGMpPzdfeK1GtuTW6zyipmA4g03ouxeazDXd4kK2wzH\nYmfxhkxL60c3oQZneO5J8rkbySBtNpQkfGJ6NDPmLRQIQqyL+q7PrpQ2aM6gIzuV\nUPHF2oJ9AgMBAAECggEAIqHvF1hqVIA8l2LyZ5kvM1pzEzoXshYZ8Pqt30BOyPMM\n+fht9zGjt0ZBqsNg1gZ1PxVR8A0Dsa0kxqoGasdrxXnm/GPsNSJkaQcqLmAtXdUa\nPcFTcTbNP2nsIlfI4fJojPGAB6dXpbUfOO5Wp0RaAWnsXq6eTOZJi8BoJzCQl59s\nuvVGZU+KQ8wevmsA3Aq0JdB4QtZjBlheW9M1CxN+Kj9xuOtQ9ciLJ7KwNWKOQ/Bj\nopZAZNF5HrAvVWLqEMjPfrml/m0cbfIL/XZByN4e+fAToRyt/PeLN4EeYgKSbF9S\nWL80tE6YyzbppsezAa91khkQYIs3vtNr10kIWx32SQKBgQD11uxbNxCb5S9w5A1g\nA94yV6f5Id/Bqdqg/s4+kvr7wpb0BciPPEpdLtuVcGFwYIXyGLpwcIWmuGvy4qpf\nI/xAZZHcq+HgN3Z2GwUqQMJiMrSw/jOvH5L8rLyN2SbDTUHM7TnPtGzHEIWorstl\n/OrCuAvcujgRtqNCK+25vYS/NQKBgQDz6DNmezUtOPrkDnHtaC86M/nnUEqpyc8G\nJHg9IokK7HLVHT5vNpT0iciS7qb7uqvGIX6wEqN2GQJxL2SL0EZB427ghasTSI8J\nssiw4Ku4KpT1NNQqOic7Vvg792p4ky4Dpww4DUCcHyoAgIyUvYGo1G40VB4vROqC\nHvbEm2W3KQKBgQCmQj4CylC/PdZBwNmSz8rbvRBqmpAbB2ZGb0zIYNrAnS89xROI\nWzvnnSMAA8rCF2U+/55HILIiuKK41rZmNY4JdyeYV94gpyHEai2qD7Xmd2hgMup9\nSxs7Kw8x12QxvPP9RYpNgDX4wqHCHMSOKugR3CqZko8M27m5rL/PV+6I6QKBgQDw\nmEFzut+Wr1lVcyZQoG/Nww2lbl9oIskTbxAohhOW8ezIamN3AulmWy++OKoBMH9X\nHx1AA/K4gS0Wh0BwZk+XmQh7c39wsydd0r0DNWxOa7qqMqWCzgB7GWwegw3EyLIg\nKjz0YaY1Gsys2CFUa6cl6f6Xoc5wpFOLbY3QHNX2GQKBgQC3RC1zMY2nV9f6MKMV\nsofE/VZF5DvJAiJjdf94aMnLCZq/HihNJIu5PnQ7BLuMeSgSxRgLGP76VFiZBx+e\nCKO+kNQkvmdZ//1t/lcsiDxpSNnJ/vU68JhYoEAMOVwugl82w27IJKaPrc5/UR3p\nsobUMlN8Aru9SMrDAmCmnDddIw==\n-----END PRIVATE KEY-----\n`;
+    Dialogflow_V2.setConfiguration(
+        "communichatbot@chatbot01-460109.iam.gserviceaccount.com",  
+        privateKey,
+        Dialogflow_V2.LANG_ENGLISH,
+        "chatbot01-460109"
+    );
+};
