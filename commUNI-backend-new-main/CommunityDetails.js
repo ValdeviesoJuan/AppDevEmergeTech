@@ -5,7 +5,7 @@ const CommunitySchema = new mongoose.Schema({
     tags: { type: [String], required: true },
     logo: { type: String, required: true },
 }, {
-    collection: "Communities" // Collection name in MongoDB
+    collection: "Communities"  
 });
 
 mongoose.model("Community", CommunitySchema);
