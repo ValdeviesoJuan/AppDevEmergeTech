@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 
 const mongoUrl = "mongodb+srv://valdeviesojuancarlos:D4IUuEHSC6whfvgR@cluster0.sw4ug8q.mongodb.net/?retryWrites=true&w=majority&appName=communi-backend";
 
-const JWT_SECRET = "ksfdgjshdkjvbhdsjkhjkhkjh54jhj$#%^gsdfjkgdsjkghdjfkhiiiuiure&&^%"
+const JWT_SECRET = "ksfdgjshdkjvbhdsjkhjkhkjh54jhj$#%^gsdfjkgdsjkghdjfkhiiiuiure&&^%";
 mongoose.connect(mongoUrl)
   .then(() => {
     console.log("Database Connected");
@@ -21,6 +21,9 @@ const User = mongoose.model("UserInfo");
 
 require('./CommunityDetails');
 const Community = mongoose.model("Community");
+
+require('./ChatbotInteractionDetails');
+const ChatbotInteraction = mongoose.model("ChatbotInteraction");
 
 app.get("/", (req, res) => {
   res.send({ status: "Started" });
@@ -66,7 +69,6 @@ app.post('/register', async (req, res) => {
   }
 });
 
-
 app.post("/login-user", async (req, res) => {
   const { email, password } = req.body;
 
@@ -90,6 +92,7 @@ app.post("/login-user", async (req, res) => {
 
     // Retrieve user data including selected interests
     const userData = {
+      userId: oldUser._id,
       firstName: oldUser.firstName,
       lastName: oldUser.lastName,
       email: oldUser.email,
@@ -100,7 +103,7 @@ app.post("/login-user", async (req, res) => {
       profilePicture: oldUser.profilePicture,
       headerImage: oldUser.headerImage,
       mbtiType: oldUser.mbtiType || "",
-    };
+    }; 
 
     // Fetch selected interests from the database
     const selectedInterests = oldUser.interests || []; // Fallback to an empty array if no interests are set
@@ -571,6 +574,19 @@ app.post('/dialogflow-webhook', async (req, res) => {
   } catch (error) {
     console.error("Dialogflow webhook error:", error);
     res.status(500).json({ fulfillmentText: "Internal server error" });
+  }
+});
+
+app.post('/save-interaction', async (req, res) => {
+  const { userId, message, response } = req.body;
+
+  try {
+    const newEntry = new ChatbotInteraction({ userId, message, response });
+    await newEntry.save();
+    res.status(201).json({ message: "Interaction saved." });
+  } catch (error) {
+    console.error("Error saving chat interaction:", error);
+    res.status(500).json({ error: "Failed to save interaction" });
   }
 });
 
